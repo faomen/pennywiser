@@ -157,13 +157,13 @@ export default function Dashboard() {
             </div>
           )}
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginBottom: 24 }}>
+          <div className="grid-3" style={{ marginBottom: 24 }}>
             <StatCard label="Saldo" value={fmt(balance)} color={balance >= 0 ? 'var(--success)' : 'var(--danger)'} />
             <StatCard label="Receitas" value={fmt(income)} color="var(--success)" sub={`${transactions.filter(t => t.type === 'income').length} transações`} />
             <StatCard label="Despesas" value={fmt(expenses)} color="var(--danger)" sub={`${transactions.filter(t => t.type === 'expense').length} transações`} />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
+          <div className="grid-2" style={{ marginBottom: 24 }}>
             <div style={{ background: 'var(--surface)', borderRadius: 12, border: '0.5px solid var(--border)', padding: '1.25rem' }}>
               <p style={{ fontSize: 13, fontWeight: 500, marginBottom: 16, color: 'var(--text-secondary)' }}>Receitas vs Despesas</p>
               <ResponsiveContainer width="100%" height={180}>

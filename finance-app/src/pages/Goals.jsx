@@ -99,7 +99,7 @@ function GoalForm({ onClose }) {
 
   return (
     <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50 }}>
-      <div style={{ background: 'var(--surface)', borderRadius: 16, padding: 24, width: 440, maxHeight: '90vh', overflowY: 'auto' }}>
+      <div style={{ background: 'var(--surface)', borderRadius: 16, padding: 24, width: '95%', maxWidth: 440, maxHeight: '90vh', overflowY: 'auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
           <h3 style={{ fontSize: 16, fontWeight: 500, margin: 0 }}>Novo objetivo</h3>
           <button onClick={onClose} style={{ background: 'transparent', border: 'none', fontSize: 20, cursor: 'pointer', color: 'var(--text-muted)' }}>×</button>
@@ -195,7 +195,7 @@ function ContribModal({ goal, onClose }) {
 
   return (
     <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50 }}>
-      <div style={{ background: 'var(--surface)', borderRadius: 16, padding: 24, width: 360 }}>
+      <div style={{ background: 'var(--surface)', borderRadius: 16, padding: 24, width: '95%', maxWidth: 360 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
           <h3 style={{ fontSize: 16, fontWeight: 500, margin: 0 }}>Atualizar — {goal.name}</h3>
           <button onClick={onClose} style={{ background: 'transparent', border: 'none', fontSize: 20, cursor: 'pointer', color: 'var(--text-muted)' }}>×</button>
@@ -339,7 +339,7 @@ export default function Goals() {
       </div>
 
       {/* Totais */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0,1fr))', gap: 12, marginBottom: 24 }}>
+      <div className="grid-2" style={{ marginBottom: 24 }}>
         <div style={{ background: 'var(--surface)', borderRadius: 12, border: '0.5px solid var(--border)', padding: '1rem 1.25rem' }}>
           <p style={{ fontSize: 12, color: 'var(--text-muted)', margin: '0 0 4px' }}>Total poupado</p>
           <p style={{ fontSize: 24, fontWeight: 500, color: 'var(--success)', margin: 0 }}>{fmt(totalSaved)}</p>
@@ -373,7 +373,7 @@ export default function Goals() {
           </button>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0,1fr))', gap: 16 }}>
+        <div className="grid-2">
           {filtered.map(g => (
             <GoalCard key={g.id} goal={g} onContrib={setContribGoal} onDelete={(id) => deleteGoal.mutate(id)} />
           ))}

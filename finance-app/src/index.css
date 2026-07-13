@@ -65,3 +65,25 @@ input::placeholder, textarea::placeholder {
 [data-theme="dark"] ::-webkit-scrollbar { width: 6px; }
 [data-theme="dark"] ::-webkit-scrollbar-track { background: var(--surface-2); }
 [data-theme="dark"] ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+
+/* ── Responsive utilities ── */
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+
+@media (max-width: 768px) {
+  .grid-2 { grid-template-columns: 1fr; }
+  .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hide-mobile { display: none !important; }
+  .full-mobile { grid-column: 1 / -1; }
+}
+
+/* Inputs e botões maiores em mobile */
+@media (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px !important; /* evita zoom automático no iOS */
+    min-height: 44px;
+  }
+  button {
+    min-height: 44px;
+  }
+}

@@ -38,7 +38,7 @@ function TransactionForm({ onClose, categories }) {
 
   return (
     <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50 }}>
-      <div style={{ background: 'var(--surface)', borderRadius: 16, padding: 24, width: 420, maxHeight: '90vh', overflowY: 'auto' }}>
+      <div style={{ background: 'var(--surface)', borderRadius: 16, padding: 24, width: '95%', maxWidth: 420, maxHeight: '90vh', overflowY: 'auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
           <h3 style={{ fontSize: 16, fontWeight: 500, margin: 0 }}>Nova transação</h3>
           <button onClick={onClose} style={{ background: 'transparent', border: 'none', fontSize: 20, cursor: 'pointer', color: 'var(--text-muted)' }}>×</button>
@@ -204,7 +204,7 @@ export default function Transactions() {
       </div>
 
       {/* Resumo rápido */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0,1fr))', gap: 12, marginBottom: 20 }}>
+      <div className="grid-3" style={{ marginBottom: 20 }}>
         {[
           { label: 'Receitas', value: fmt(income), color: 'var(--success)' },
           { label: 'Despesas', value: fmt(expenses), color: 'var(--danger)' },

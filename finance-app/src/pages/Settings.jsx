@@ -123,7 +123,7 @@ function CategoryForm({ onClose }) {
 
   return (
     <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50 }}>
-      <div style={{ background: 'var(--surface)', borderRadius: 16, padding: 24, width: 380 }}>
+      <div style={{ background: 'var(--surface)', borderRadius: 16, padding: 24, width: '95%', maxWidth: 380 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
           <h3 style={{ fontSize: 16, fontWeight: 500, margin: 0 }}>Nova categoria</h3>
           <button onClick={onClose} style={{ background: 'transparent', border: 'none', fontSize: 20, cursor: 'pointer', color: 'var(--text-muted)' }}>×</button>
