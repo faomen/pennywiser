@@ -1,8 +1,3 @@
-Erro claro — duas cópias do React em conflito. O @supabase/auth-ui-react tem o seu próprio React bundled e está a colidir com o teu. É um problema de compatibilidade de versões — tens React 19 mas o auth-ui-react foi feito para React 18.
-A solução mais simples é remover o @supabase/auth-ui-react e fazer o nosso próprio formulário de login:
-bashnpm uninstall @supabase/auth-ui-react @supabase/auth-ui-shared
-Substitui o App.jsx por uma versão com login próprio:
-bashcat > src/App.jsx << 'EOF'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { supabase } from './lib/supabase'
