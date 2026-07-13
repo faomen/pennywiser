@@ -7,6 +7,7 @@ import Transactions from './pages/Transactions'
 import Goals from './pages/Goals'
 import Shared from './pages/Shared'
 import JoinGroup from './pages/JoinGroup'
+import Settings from './pages/Settings'
 
 
 function LoginPage() {
@@ -105,6 +106,7 @@ export default function App() {
           <Route path="/goals" element={<Goals />} />
           <Route path="/shared" element={<Shared />} />
           <Route path="/join/:token" element={<JoinGroup />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </Layout>
     </BrowserRouter>

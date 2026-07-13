@@ -18,6 +18,7 @@ export default function Layout({ children, session }) {
           { to: '/transactions', label: '💳 Transações' },
           { to: '/goals', label: '🎯 Objetivos' },
           { to: '/shared', label: '👥 Partilhadas' },
+          { to: '/settings', label: '⚙️ Definições' },
         ].map(({ to, label }) => (
           <NavLink key={to} to={to} style={({ isActive }) => ({ padding: '8px 12px', borderRadius: 8, textDecoration: 'none', color: isActive ? '#6366f1' : '#374151', background: isActive ? '#eef2ff' : 'transparent', fontSize: 14 })}>
             {label}
