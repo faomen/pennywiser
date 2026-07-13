@@ -21,50 +21,40 @@ function LoginPage() {
     e.preventDefault()
     setLoading(true)
     setError('')
-    const fn = isSignUp
-      ? supabase.auth.signUp({ email, password })
-      : supabase.auth.signInWithPassword({ email, password })
-    const { error } = await fn
+    const { error } = isSignUp
+      ? await supabase.auth.signUp({ email, password })
+      : await supabase.auth.signInWithPassword({ email, password })
     if (error) setError(error.message)
     setLoading(false)
   }
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', background: '#f9fafb' }}>
-      <div style={{ width: 360, padding: 32, background: 'white', borderRadius: 16, boxShadow: '0 1px 4px rgba(0,0,0,0.1)' }}>
-        <h1 style={{ fontSize: 22, fontWeight: 600, textAlign: 'center', marginBottom: 8 }}>💰 Pennywiser</h1>
-        <p style={{ textAlign: 'center', color: '#6b7280', marginBottom: 24, fontSize: 14 }}>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', background: 'var(--bg)' }}>
+      <div style={{ width: 360, padding: 32, background: 'var(--surface)', borderRadius: 16, border: '0.5px solid var(--border)', boxShadow: 'var(--shadow)' }}>
+        <h1 style={{ fontSize: 22, fontWeight: 600, textAlign: 'center', marginBottom: 4, color: 'var(--text-primary)' }}>💰 Pennywiser</h1>
+        <p style={{ textAlign: 'center', color: 'var(--text-muted)', marginBottom: 24, fontSize: 14 }}>
           {isSignUp ? 'Criar conta' : 'Entrar na tua conta'}
         </p>
         <form onSubmit={handle} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            required
-            style={{ padding: '10px 12px', borderRadius: 8, border: '1px solid #e5e7eb', fontSize: 14, outline: 'none' }}
+            type="email" placeholder="Email" value={email}
+            onChange={e => setEmail(e.target.value)} required
+            style={{ padding: '10px 12px', borderRadius: 8, border: '1px solid var(--border)', fontSize: 14, outline: 'none', background: 'var(--surface)', color: 'var(--text-primary)' }}
           />
           <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            required
-            style={{ padding: '10px 12px', borderRadius: 8, border: '1px solid #e5e7eb', fontSize: 14, outline: 'none' }}
+            type="password" placeholder="Password" value={password}
+            onChange={e => setPassword(e.target.value)} required
+            style={{ padding: '10px 12px', borderRadius: 8, border: '1px solid var(--border)', fontSize: 14, outline: 'none', background: 'var(--surface)', color: 'var(--text-primary)' }}
           />
-          {error && <p style={{ color: '#ef4444', fontSize: 13 }}>{error}</p>}
-          <button
-            type="submit"
-            disabled={loading}
-            style={{ padding: '10px 12px', borderRadius: 8, background: '#6366f1', color: 'white', border: 'none', fontSize: 14, fontWeight: 500, cursor: 'pointer' }}
-          >
+          {error && <p style={{ color: 'var(--danger)', fontSize: 13 }}>{error}</p>}
+          <button type="submit" disabled={loading}
+            style={{ padding: '10px 12px', borderRadius: 8, background: 'var(--accent)', color: 'white', border: 'none', fontSize: 14, fontWeight: 500, cursor: 'pointer', marginTop: 4 }}>
             {loading ? 'A processar...' : isSignUp ? 'Criar conta' : 'Entrar'}
           </button>
         </form>
-        <p style={{ textAlign: 'center', marginTop: 16, fontSize: 13, color: '#6b7280' }}>
+        <p style={{ textAlign: 'center', marginTop: 16, fontSize: 13, color: 'var(--text-muted)' }}>
           {isSignUp ? 'Já tens conta?' : 'Não tens conta?'}{' '}
-          <span onClick={() => setIsSignUp(!isSignUp)} style={{ color: '#6366f1', cursor: 'pointer' }}>
+          <span onClick={() => setIsSignUp(!isSignUp)} style={{ color: 'var(--accent)', cursor: 'pointer' }}>
             {isSignUp ? 'Entrar' : 'Criar conta'}
           </span>
         </p>

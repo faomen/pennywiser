@@ -134,7 +134,14 @@ export default function Dashboard() {
         <h2 style={{ fontSize: 20, fontWeight: 500, margin: 0, color: 'var(--text-primary)' }}>Dashboard</h2>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <button onClick={() => navMonth(-1)} style={{ padding: '6px 10px', borderRadius: 8, border: '0.5px solid var(--border)', background: 'var(--surface)', color: 'var(--text-primary)', cursor: 'pointer' }}>‹</button>
-          <span style={{ fontSize: 14, fontWeight: 500, minWidth: 120, textAlign: 'center', color: 'var(--text-primary)' }}>{MONTHS[month - 1]} {year}</span>
+          <select value={month} onChange={e => setMonth(Number(e.target.value))}
+            style={{ padding: '6px 8px', borderRadius: 8, border: '0.5px solid var(--border)', background: 'var(--surface)', color: 'var(--text-primary)', fontSize: 13, fontWeight: 500, cursor: 'pointer', outline: 'none' }}>
+            {MONTHS.map((m, i) => <option key={i} value={i + 1}>{m}</option>)}
+          </select>
+          <select value={year} onChange={e => setYear(Number(e.target.value))}
+            style={{ padding: '6px 8px', borderRadius: 8, border: '0.5px solid var(--border)', background: 'var(--surface)', color: 'var(--text-primary)', fontSize: 13, fontWeight: 500, cursor: 'pointer', outline: 'none' }}>
+            {[2023, 2024, 2025, 2026, 2027].map(y => <option key={y} value={y}>{y}</option>)}
+          </select>
           <button onClick={() => navMonth(1)} style={{ padding: '6px 10px', borderRadius: 8, border: '0.5px solid var(--border)', background: 'var(--surface)', color: 'var(--text-primary)', cursor: 'pointer' }}>›</button>
         </div>
       </div>

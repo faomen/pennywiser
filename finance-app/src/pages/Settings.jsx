@@ -111,9 +111,9 @@ function useUpdateProfile() {
 // ─── Category Form ────────────────────────────────────────────
 function CategoryForm({ onClose }) {
   const addCat = useAddCategory()
-  const [form, setForm] = useState({ name: '', type: 'expense', color: '#6366f1', icon: 'wallet' })
+  const [form, setForm] = useState({ name: '', type: 'expense', color: 'var(--accent)', icon: 'wallet' })
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
-  const inputStyle = { padding: '9px 12px', borderRadius: 8, border: '1px solid #e5e7eb', fontSize: 14, width: '100%', outline: 'none' }
+  const inputStyle = { padding: '9px 12px', borderRadius: 8, border: '1px solid var(--border)', fontSize: 14, width: '100%', outline: 'none', background: 'var(--surface)', color: 'var(--text-primary)' }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -122,23 +122,23 @@ function CategoryForm({ onClose }) {
   }
 
   return (
-    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50 }}>
-      <div style={{ background: 'white', borderRadius: 16, padding: 24, width: 380 }}>
+    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50 }}>
+      <div style={{ background: 'var(--surface)', borderRadius: 16, padding: 24, width: 380 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
           <h3 style={{ fontSize: 16, fontWeight: 500, margin: 0 }}>Nova categoria</h3>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', color: '#9ca3af' }}>×</button>
+          <button onClick={onClose} style={{ background: 'transparent', border: 'none', fontSize: 20, cursor: 'pointer', color: 'var(--text-muted)' }}>×</button>
         </div>
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           <div>
-            <label style={{ fontSize: 12, color: '#6b7280', marginBottom: 4, display: 'block' }}>Nome</label>
+            <label style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 4, display: 'block' }}>Nome</label>
             <input type="text" placeholder="Ex: Ginásio" value={form.name} onChange={e => set('name', e.target.value)} required style={inputStyle} />
           </div>
           <div>
-            <label style={{ fontSize: 12, color: '#6b7280', marginBottom: 4, display: 'block' }}>Tipo</label>
+            <label style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 4, display: 'block' }}>Tipo</label>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
               {[['expense','💸 Despesa'],['income','💰 Receita'],['both','↕️ Ambos']].map(([v,l]) => (
                 <button key={v} type="button" onClick={() => set('type', v)}
-                  style={{ padding: 8, borderRadius: 8, border: `2px solid ${form.type === v ? '#6366f1' : '#e5e7eb'}`, background: form.type === v ? '#eef2ff' : 'white', cursor: 'pointer', fontSize: 12, color: form.type === v ? '#6366f1' : '#6b7280' }}>
+                  style={{ padding: 8, borderRadius: 8, border: `2px solid ${form.type === v ? 'var(--accent)' : 'var(--border)'}`, background: form.type === v ? 'var(--accent-bg)' : 'var(--surface)', cursor: 'pointer', fontSize: 12, color: form.type === v ? 'var(--accent)' : 'var(--text-muted)' }}>
                   {l}
                 </button>
               ))}
@@ -146,17 +146,17 @@ function CategoryForm({ onClose }) {
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
             <div>
-              <label style={{ fontSize: 12, color: '#6b7280', marginBottom: 4, display: 'block' }}>Cor</label>
+              <label style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 4, display: 'block' }}>Cor</label>
               <input type="color" value={form.color} onChange={e => set('color', e.target.value)}
                 style={{ ...inputStyle, padding: 4, height: 38, cursor: 'pointer' }} />
             </div>
             <div>
-              <label style={{ fontSize: 12, color: '#6b7280', marginBottom: 4, display: 'block' }}>Ícone (nome)</label>
+              <label style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 4, display: 'block' }}>Ícone (nome)</label>
               <input type="text" placeholder="wallet" value={form.icon} onChange={e => set('icon', e.target.value)} style={inputStyle} />
             </div>
           </div>
           <button type="submit" disabled={addCat.isPending}
-            style={{ padding: 10, borderRadius: 8, background: '#6366f1', color: 'white', border: 'none', fontSize: 14, fontWeight: 500, cursor: 'pointer' }}>
+            style={{ padding: 10, borderRadius: 8, background: 'var(--accent)', color: 'white', border: 'none', fontSize: 14, fontWeight: 500, cursor: 'pointer' }}>
             {addCat.isPending ? 'A guardar...' : 'Criar categoria'}
           </button>
         </form>
@@ -211,8 +211,8 @@ export default function Settings() {
   }
 
   const tabStyle = (t) => ({
-    padding: '8px 16px', borderRadius: 20, border: `1px solid ${tab === t ? '#6366f1' : '#e5e7eb'}`,
-    background: tab === t ? '#eef2ff' : 'white', color: tab === t ? '#6366f1' : '#6b7280',
+    padding: '8px 16px', borderRadius: 20, border: `1px solid ${tab === t ? 'var(--accent)' : 'var(--border)'}`,
+    background: tab === t ? 'var(--accent-bg)' : 'var(--surface)', color: tab === t ? 'var(--accent)' : 'var(--text-muted)',
     fontSize: 13, cursor: 'pointer', fontWeight: tab === t ? 500 : 400
   })
 
@@ -233,14 +233,14 @@ export default function Settings() {
       {tab === 'categories' && (
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-            <p style={{ fontSize: 14, color: '#6b7280', margin: 0 }}>{categories.length} categorias</p>
+            <p style={{ fontSize: 14, color: 'var(--text-muted)', margin: 0 }}>{categories.length} categorias</p>
             <button onClick={() => setShowCatForm(true)}
-              style={{ padding: '7px 14px', borderRadius: 8, background: '#6366f1', color: 'white', border: 'none', fontSize: 13, fontWeight: 500, cursor: 'pointer' }}>
+              style={{ padding: '7px 14px', borderRadius: 8, background: 'var(--accent)', color: 'white', border: 'none', fontSize: 13, fontWeight: 500, cursor: 'pointer' }}>
               + Nova categoria
             </button>
           </div>
 
-          <div style={{ background: 'white', borderRadius: 12, border: '0.5px solid #e5e7eb', overflow: 'hidden' }}>
+          <div style={{ background: 'var(--surface)', borderRadius: 12, border: '0.5px solid var(--border)', overflow: 'hidden' }}>
             {categories.map((cat, i) => (
               <div key={cat.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 1.25rem', borderBottom: i < categories.length - 1 ? '0.5px solid #f3f4f6' : 'none' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -248,8 +248,8 @@ export default function Settings() {
                     <div style={{ width: 12, height: 12, borderRadius: '50%', background: cat.color }} />
                   </div>
                   <div>
-                    <p style={{ fontSize: 13, fontWeight: 500, margin: 0, color: '#111827' }}>{cat.name}</p>
-                    <p style={{ fontSize: 11, color: '#9ca3af', margin: 0 }}>
+                    <p style={{ fontSize: 13, fontWeight: 500, margin: 0, color: 'var(--text-primary)' }}>{cat.name}</p>
+                    <p style={{ fontSize: 11, color: 'var(--text-muted)', margin: 0 }}>
                       {cat.type === 'expense' ? 'Despesa' : cat.type === 'income' ? 'Receita' : 'Ambos'}
                       {cat.is_default && ' · default'}
                     </p>
@@ -257,7 +257,7 @@ export default function Settings() {
                 </div>
                 {!cat.is_default && (
                   <button onClick={() => { if (confirm(`Apagar "${cat.name}"?`)) deleteCategory.mutate(cat.id) }}
-                    style={{ background: 'none', border: 'none', color: '#d1d5db', cursor: 'pointer', fontSize: 18, padding: 4 }}>
+                    style={{ background: 'transparent', border: 'none', color: 'var(--border-strong)', cursor: 'pointer', fontSize: 18, padding: 4 }}>
                     ×
                   </button>
                 )}
@@ -271,30 +271,30 @@ export default function Settings() {
       {tab === 'budgets' && (
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
-            <button onClick={() => navMonth(-1)} style={{ padding: '6px 10px', borderRadius: 8, border: '0.5px solid #e5e7eb', background: 'white', cursor: 'pointer' }}>‹</button>
+            <button onClick={() => navMonth(-1)} style={{ padding: '6px 10px', borderRadius: 8, border: '0.5px solid var(--border)', background: 'var(--surface)', cursor: 'pointer' }}>‹</button>
             <span style={{ fontSize: 14, fontWeight: 500, minWidth: 130, textAlign: 'center' }}>{MONTHS[month - 1]} {year}</span>
-            <button onClick={() => navMonth(1)} style={{ padding: '6px 10px', borderRadius: 8, border: '0.5px solid #e5e7eb', background: 'white', cursor: 'pointer' }}>›</button>
+            <button onClick={() => navMonth(1)} style={{ padding: '6px 10px', borderRadius: 8, border: '0.5px solid var(--border)', background: 'var(--surface)', cursor: 'pointer' }}>›</button>
           </div>
 
-          <p style={{ fontSize: 13, color: '#9ca3af', marginBottom: 16 }}>
+          <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 16 }}>
             Define o limite mensal de despesa por categoria. Vais receber um aviso no Dashboard quando te aproximares.
           </p>
 
-          <div style={{ background: 'white', borderRadius: 12, border: '0.5px solid #e5e7eb', overflow: 'hidden' }}>
+          <div style={{ background: 'var(--surface)', borderRadius: 12, border: '0.5px solid var(--border)', overflow: 'hidden' }}>
             {expenseCategories.map((cat, i) => {
               const budget = getBudget(cat.id)
               return (
                 <div key={cat.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 1.25rem', borderBottom: i < expenseCategories.length - 1 ? '0.5px solid #f3f4f6' : 'none', gap: 12 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 1, minWidth: 0 }}>
                     <div style={{ width: 10, height: 10, borderRadius: '50%', background: cat.color, flexShrink: 0 }} />
-                    <span style={{ fontSize: 13, color: '#374151', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{cat.name}</span>
+                    <span style={{ fontSize: 13, color: 'var(--text-secondary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{cat.name}</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
                     {budget ? (
                       <>
-                        <span style={{ fontSize: 13, fontWeight: 500, color: '#6366f1', minWidth: 70, textAlign: 'right' }}>{fmt(budget.amount)}</span>
+                        <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--accent)', minWidth: 70, textAlign: 'right' }}>{fmt(budget.amount)}</span>
                         <button onClick={() => deleteBudget.mutate({ id: budget.id, month, year })}
-                          style={{ background: 'none', border: 'none', color: '#d1d5db', cursor: 'pointer', fontSize: 16, padding: 2 }}>×</button>
+                          style={{ background: 'transparent', border: 'none', color: 'var(--border-strong)', cursor: 'pointer', fontSize: 16, padding: 2 }}>×</button>
                       </>
                     ) : (
                       <>
@@ -303,10 +303,10 @@ export default function Settings() {
                           value={budgetInputs[cat.id] || ''}
                           onChange={e => setBudgetInputs(prev => ({ ...prev, [cat.id]: e.target.value }))}
                           onKeyDown={e => e.key === 'Enter' && handleBudgetSave(cat.id)}
-                          style={{ width: 90, padding: '5px 8px', borderRadius: 6, border: '1px solid #e5e7eb', fontSize: 13, outline: 'none' }}
+                          style={{ width: 90, padding: '5px 8px', borderRadius: 6, border: '1px solid var(--border)', fontSize: 13, outline: 'none', background: 'var(--surface)', color: 'var(--text-primary)' }}
                         />
                         <button onClick={() => handleBudgetSave(cat.id)}
-                          style={{ padding: '5px 10px', borderRadius: 6, background: '#6366f1', color: 'white', border: 'none', fontSize: 12, cursor: 'pointer' }}>
+                          style={{ padding: '5px 10px', borderRadius: 6, background: 'var(--accent)', color: 'white', border: 'none', fontSize: 12, cursor: 'pointer' }}>
                           ✓
                         </button>
                       </>
@@ -317,7 +317,7 @@ export default function Settings() {
             })}
           </div>
 
-          <p style={{ fontSize: 11, color: '#9ca3af', marginTop: 12 }}>
+          <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 12 }}>
             Podes definir orçamentos diferentes para cada mês. Prime Enter ou ✓ para guardar.
           </p>
         </div>
@@ -326,29 +326,29 @@ export default function Settings() {
       {/* ── PERFIL ── */}
       {tab === 'profile' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <div style={{ background: 'white', borderRadius: 12, border: '0.5px solid #e5e7eb', padding: '1.25rem' }}>
-            <p style={{ fontSize: 13, fontWeight: 500, marginBottom: 16, color: '#374151' }}>Informação pessoal</p>
+          <div style={{ background: 'var(--surface)', borderRadius: 12, border: '0.5px solid var(--border)', padding: '1.25rem' }}>
+            <p style={{ fontSize: 13, fontWeight: 500, marginBottom: 16, color: 'var(--text-secondary)' }}>Informação pessoal</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               <div>
-                <label style={{ fontSize: 12, color: '#6b7280', marginBottom: 4, display: 'block' }}>Nome de utilizador</label>
+                <label style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 4, display: 'block' }}>Nome de utilizador</label>
                 <input type="text"
                   defaultValue={profile?.display_name}
                   onChange={e => setProfileName(e.target.value)}
                   placeholder={profile?.display_name}
-                  style={{ padding: '9px 12px', borderRadius: 8, border: '1px solid #e5e7eb', fontSize: 14, width: '100%', outline: 'none' }} />
+                  style={{ padding: '9px 12px', borderRadius: 8, border: '1px solid var(--border)', fontSize: 14, width: '100%', outline: 'none', background: 'var(--surface)', color: 'var(--text-primary)' }} />
               </div>
               <button onClick={handleProfileSave} disabled={updateProfile.isPending}
-                style={{ padding: '9px', borderRadius: 8, background: '#6366f1', color: 'white', border: 'none', fontSize: 14, fontWeight: 500, cursor: 'pointer' }}>
+                style={{ padding: '9px', borderRadius: 8, background: 'var(--accent)', color: 'white', border: 'none', fontSize: 14, fontWeight: 500, cursor: 'pointer' }}>
                 {profileSaved ? '✅ Guardado!' : updateProfile.isPending ? 'A guardar...' : 'Guardar alterações'}
               </button>
             </div>
           </div>
 
-          <div style={{ background: 'white', borderRadius: 12, border: '0.5px solid #e5e7eb', padding: '1.25rem' }}>
-            <p style={{ fontSize: 13, fontWeight: 500, marginBottom: 4, color: '#374151' }}>Conta</p>
-            <p style={{ fontSize: 12, color: '#9ca3af', marginBottom: 16 }}>Sessão atual</p>
+          <div style={{ background: 'var(--surface)', borderRadius: 12, border: '0.5px solid var(--border)', padding: '1.25rem' }}>
+            <p style={{ fontSize: 13, fontWeight: 500, marginBottom: 4, color: 'var(--text-secondary)' }}>Conta</p>
+            <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 16 }}>Sessão atual</p>
             <button onClick={() => supabase.auth.signOut()}
-              style={{ padding: '9px 16px', borderRadius: 8, border: '1px solid #fee2e2', background: 'white', color: '#ef4444', fontSize: 13, cursor: 'pointer', fontWeight: 500 }}>
+              style={{ padding: '9px 16px', borderRadius: 8, border: '1px solid var(--danger-bg)', background: 'var(--surface)', color: 'var(--danger)', fontSize: 13, cursor: 'pointer', fontWeight: 500 }}>
               Terminar sessão
             </button>
           </div>
