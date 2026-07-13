@@ -24,13 +24,17 @@ export default function App() {
     return () => subscription.unsubscribe()
   }, [])
 
-  if (loading) return <div className="flex items-center justify-center h-screen">A carregar...</div>
+  if (loading) return (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+      A carregar...
+    </div>
+  )
 
   if (!session) return (
-    <div className="flex items-center justify-center h-screen bg-gray-50">
-      <div className="w-full max-w-sm p-8 bg-white rounded-2xl shadow-sm">
-        <h1 className="text-xl font-medium mb-6 text-center">Finance App</h1>
-        <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} providers={['google']} localization={{ variables: { sign_in: { email_label: 'Email', password_label: 'Password', button_label: 'Entrar' }, sign_up: { button_label: 'Criar conta' } } }} />
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', background: '#f9fafb' }}>
+      <div style={{ width: 360, padding: 32, background: 'white', borderRadius: 16, boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
+        <h1 style={{ fontSize: 20, fontWeight: 600, textAlign: 'center', marginBottom: 24 }}>💰 Pennywiser</h1>
+        <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} providers={[]} />
       </div>
     </div>
   )
