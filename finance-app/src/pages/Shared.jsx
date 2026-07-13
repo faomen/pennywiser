@@ -4,6 +4,22 @@ import { supabase } from '../lib/supabase'
 
 const fmt = (n) => new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR' }).format(Math.abs(n))
 
+function useCreateInvite() {
+  return useMutation({
+    mutationFn: async (group_id) => {
+      const { data: { user } } = await supabase.auth.getUser()
+      const { data, error } = await supabase
+        .from('group_invites')
+        .insert({ group_id, created_by: user.id })
+        .select()
+        .single()
+      if (error) throw error
+      return data
+    }
+  })
+}
+
+
 // ─── Algoritmo de simplificação de dívidas ───────────────────
 function simplifyDebts(balances) {
   const creditors = balances.filter(b => b.balance > 0.01).map(b => ({ ...b })).sort((a, b) => b.balance - a.balance)
@@ -28,9 +44,29 @@ function useGroups() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('shared_groups')
-        .select(`*, shared_group_members(user_id, profiles(display_name)), shared_expenses(id, amount, description, date, paid_by, profiles!paid_by(display_name), shared_expense_splits(user_id, amount, is_settled, profiles(display_name)))`)
+        .select(`
+          *,
+          shared_group_members(user_id, profiles(display_name)),
+          shared_expenses(id, amount, description, date, paid_by,
+            shared_expense_splits(user_id, amount, is_settled, profiles(display_name))
+          )
+        `)
         .order('created_at', { ascending: false })
       if (error) throw error
+
+      // Busca nomes de quem pagou separadamente
+      if (data) {
+        for (const group of data) {
+          for (const exp of group.shared_expenses || []) {
+            const { data: profile } = await supabase
+              .from('profiles')
+              .select('display_name')
+              .eq('id', exp.paid_by)
+              .single()
+            exp.profiles = profile
+          }
+        }
+      }
       return data
     }
   })
@@ -235,11 +271,22 @@ function ExpenseForm({ group, onClose }) {
 function GroupCard({ group, onAddExpense, onDelete }) {
   const [expanded, setExpanded] = useState(false)
   const settle = useSettleExpense()
+  const createInvite = useCreateInvite()
+  const [inviteLink, setInviteLink] = useState(null)
+
+  const handleInvite = async () => {
+  const invite = await createInvite.mutateAsync(group.id)
+  const link = `${window.location.origin}/join/${invite.token}`
+  setInviteLink(link)
+  navigator.clipboard.writeText(link)
+}
 
   const expenses = group.shared_expenses || []
   const totalSpent = expenses.reduce((s, e) => s + Number(e.amount), 0)
   const members = group.shared_group_members || []
   const isEvent = group.type === 'event'
+  
+  
 
   // Calcular balances
   const balanceMap = {}
@@ -306,6 +353,15 @@ function GroupCard({ group, onAddExpense, onDelete }) {
               style={{ padding: '6px 12px', borderRadius: 6, border: '1px solid #6366f1', background: 'white', color: '#6366f1', fontSize: 12, cursor: 'pointer', fontWeight: 500 }}>
               + Despesa
             </button>
+            <button onClick={handleInvite}
+            style={{ padding: '6px 12px', borderRadius: 6, border: '1px solid #e5e7eb', background: 'white', color: '#374151', fontSize: 12, cursor: 'pointer' }}>
+            🔗 Convidar
+            </button>
+            {inviteLink && (
+            <div style={{ padding: '8px 12px', background: '#f0fdf4', borderRadius: 6, fontSize: 11, color: '#10b981', wordBreak: 'break-all' }}>
+                ✅ Link copiado! {inviteLink}
+            </div>
+            )}
             <button onClick={() => { if (confirm('Apagar grupo e todas as despesas?')) onDelete(group.id) }}
               style={{ padding: '6px 12px', borderRadius: 6, border: '1px solid #fee2e2', background: 'white', color: '#ef4444', fontSize: 12, cursor: 'pointer' }}>
               Apagar grupo

@@ -6,6 +6,8 @@ import Dashboard from './pages/Dashboard'
 import Transactions from './pages/Transactions'
 import Goals from './pages/Goals'
 import Shared from './pages/Shared'
+import JoinGroup from './pages/JoinGroup'
+
 
 function LoginPage() {
   const [email, setEmail] = useState('')
@@ -102,6 +104,7 @@ export default function App() {
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/goals" element={<Goals />} />
           <Route path="/shared" element={<Shared />} />
+          <Route path="/join/:token" element={<JoinGroup />} />
         </Routes>
       </Layout>
     </BrowserRouter>
