@@ -1,13 +1,79 @@
+Erro claro — duas cópias do React em conflito. O @supabase/auth-ui-react tem o seu próprio React bundled e está a colidir com o teu. É um problema de compatibilidade de versões — tens React 19 mas o auth-ui-react foi feito para React 18.
+A solução mais simples é remover o @supabase/auth-ui-react e fazer o nosso próprio formulário de login:
+bashnpm uninstall @supabase/auth-ui-react @supabase/auth-ui-shared
+Substitui o App.jsx por uma versão com login próprio:
+bashcat > src/App.jsx << 'EOF'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { supabase } from './lib/supabase'
-import { Auth } from '@supabase/auth-ui-react'
-import { ThemeSupa } from '@supabase/auth-ui-shared'
 import Layout from './components/Layout'
 import Dashboard from './pages/Dashboard'
 import Transactions from './pages/Transactions'
 import Goals from './pages/Goals'
 import Shared from './pages/Shared'
+
+function LoginPage() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [isSignUp, setIsSignUp] = useState(false)
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const handle = async (e) => {
+    e.preventDefault()
+    setLoading(true)
+    setError('')
+    const fn = isSignUp
+      ? supabase.auth.signUp({ email, password })
+      : supabase.auth.signInWithPassword({ email, password })
+    const { error } = await fn
+    if (error) setError(error.message)
+    setLoading(false)
+  }
+
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', background: '#f9fafb' }}>
+      <div style={{ width: 360, padding: 32, background: 'white', borderRadius: 16, boxShadow: '0 1px 4px rgba(0,0,0,0.1)' }}>
+        <h1 style={{ fontSize: 22, fontWeight: 600, textAlign: 'center', marginBottom: 8 }}>💰 Pennywiser</h1>
+        <p style={{ textAlign: 'center', color: '#6b7280', marginBottom: 24, fontSize: 14 }}>
+          {isSignUp ? 'Criar conta' : 'Entrar na tua conta'}
+        </p>
+        <form onSubmit={handle} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            required
+            style={{ padding: '10px 12px', borderRadius: 8, border: '1px solid #e5e7eb', fontSize: 14, outline: 'none' }}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            required
+            style={{ padding: '10px 12px', borderRadius: 8, border: '1px solid #e5e7eb', fontSize: 14, outline: 'none' }}
+          />
+          {error && <p style={{ color: '#ef4444', fontSize: 13 }}>{error}</p>}
+          <button
+            type="submit"
+            disabled={loading}
+            style={{ padding: '10px 12px', borderRadius: 8, background: '#6366f1', color: 'white', border: 'none', fontSize: 14, fontWeight: 500, cursor: 'pointer' }}
+          >
+            {loading ? 'A processar...' : isSignUp ? 'Criar conta' : 'Entrar'}
+          </button>
+        </form>
+        <p style={{ textAlign: 'center', marginTop: 16, fontSize: 13, color: '#6b7280' }}>
+          {isSignUp ? 'Já tens conta?' : 'Não tens conta?'}{' '}
+          <span onClick={() => setIsSignUp(!isSignUp)} style={{ color: '#6366f1', cursor: 'pointer' }}>
+            {isSignUp ? 'Entrar' : 'Criar conta'}
+          </span>
+        </p>
+      </div>
+    </div>
+  )
+}
 
 export default function App() {
   const [session, setSession] = useState(null)
@@ -30,14 +96,7 @@ export default function App() {
     </div>
   )
 
-  if (!session) return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', background: '#f9fafb' }}>
-      <div style={{ width: 360, padding: 32, background: 'white', borderRadius: 16, boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
-        <h1 style={{ fontSize: 20, fontWeight: 600, textAlign: 'center', marginBottom: 24 }}>💰 Pennywiser</h1>
-        <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} providers={[]} />
-      </div>
-    </div>
-  )
+  if (!session) return <LoginPage />
 
   return (
     <BrowserRouter>
