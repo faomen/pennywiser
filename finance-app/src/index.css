@@ -158,3 +158,64 @@ input::placeholder, textarea::placeholder { color: var(--text-muted) !important;
 @media (min-width: 768px) {
   .login-panel { display: flex !important; }
 }
+
+/* Adiciona ao fim do index.css */
+
+/* ── Mobile PWA fixes ── */
+@media (max-width: 768px) {
+  /* Tamanho mínimo de toque — 44px em todos os elementos interativos */
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Inputs grandes para não dar zoom no iOS */
+  input, select, textarea {
+    font-size: 16px !important;
+    min-height: 46px;
+  }
+
+  /* Remove highlight azul ao tocar */
+  * { -webkit-tap-highlight-color: transparent; }
+
+  /* Bottom sheet modais em vez de centrado */
+  .modal-mobile {
+    align-items: flex-end !important;
+  }
+
+  /* Scroll horizontal suave nos filtros */
+  .filters-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .filters-scroll::-webkit-scrollbar { display: none; }
+
+  /* Cards com mais padding */
+  .card-mobile {
+    padding: 16px !important;
+    border-radius: 14px !important;
+  }
+
+  /* Texto maior para legibilidade */
+  .tx-amount {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+  }
+
+  /* Header fixo com sombra */
+  header {
+    box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+  }
+}
+
+/* Safe area para iPhone com notch */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .tab-bar {
+    padding-bottom: env(safe-area-inset-bottom) !important;
+    height: calc(64px + env(safe-area-inset-bottom)) !important;
+  }
+  main {
+    padding-bottom: calc(64px + env(safe-area-inset-bottom) + 16px) !important;
+  }
+}
