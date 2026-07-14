@@ -5,7 +5,7 @@ import { supabase } from '../lib/supabase'
 export default function JoinGroup() {
   const { token } = useParams()
   const navigate = useNavigate()
-  const [status, setStatus] = useState('loading') // loading | joining | success | error
+  const [status, setStatus] = useState('loading')
   const [message, setMessage] = useState('')
 
   useEffect(() => {
@@ -13,7 +13,6 @@ export default function JoinGroup() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) { navigate(`/?redirect=/join/${token}`); return }
 
-      // Busca o convite
       const { data: invite, error } = await supabase
         .from('group_invites')
         .select('*, shared_groups(name)')
@@ -27,7 +26,6 @@ export default function JoinGroup() {
       setStatus('joining')
       setMessage(`A juntar-te a "${invite.shared_groups.name}"...`)
 
-      // Verifica se já é membro
       const { data: existing } = await supabase
         .from('shared_group_members')
         .select('user_id')
@@ -39,7 +37,6 @@ export default function JoinGroup() {
         await supabase.from('shared_group_members').insert({ group_id: invite.group_id, user_id: user.id })
       }
 
-      // Marca convite como usado
       await supabase.from('group_invites').update({ used_at: new Date().toISOString(), used_by: user.id }).eq('id', invite.id)
 
       setStatus('success')
@@ -50,16 +47,16 @@ export default function JoinGroup() {
   }, [token])
 
   const icon = { loading: '⏳', joining: '🔄', success: '✅', error: '❌' }[status]
-  const color = { loading: '#9ca3af', joining: '#6366f1', success: '#10b981', error: '#ef4444' }[status]
+  const color = { loading: 'var(--text-muted)', joining: 'var(--accent)', success: 'var(--income)', error: 'var(--expense)' }[status]
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', background: '#f9fafb' }}>
-      <div style={{ background: 'white', borderRadius: 16, padding: 40, textAlign: 'center', maxWidth: 360, boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', background: 'var(--bg)' }}>
+      <div style={{ background: 'var(--surface)', borderRadius: 16, padding: 40, textAlign: 'center', maxWidth: 360, border: '1px solid var(--border)' }}>
         <p style={{ fontSize: 48, marginBottom: 16 }}>{icon}</p>
         <p style={{ fontSize: 16, fontWeight: 500, color, margin: 0 }}>{message || 'A processar convite...'}</p>
-        {status === 'success' && <p style={{ fontSize: 13, color: '#9ca3af', marginTop: 8 }}>A redirecionar...</p>}
+        {status === 'success' && <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 8 }}>A redirecionar...</p>}
         {status === 'error' && (
-          <button onClick={() => navigate('/shared')} style={{ marginTop: 16, padding: '8px 20px', borderRadius: 8, background: '#6366f1', color: 'white', border: 'none', cursor: 'pointer', fontSize: 13 }}>
+          <button onClick={() => navigate('/shared')} style={{ marginTop: 16, padding: '8px 20px', borderRadius: 8, background: 'var(--accent)', color: 'white', border: 'none', cursor: 'pointer', fontSize: 13 }}>
             Ir para Partilhadas
           </button>
         )}

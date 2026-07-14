@@ -1,138 +1,143 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  /* Palette — slate base, emerald accent, warm amber highlight */
-  --bg:           #f6f7f9;
+  /* Revolut/Linear — neutros frios, um único acento */
+  --bg:           #fafafa;
   --surface:      #ffffff;
-  --surface-2:    #f0f2f5;
-  --surface-3:    #e8eaf0;
-  --border:       #e2e5ec;
-  --border-strong:#c8cdd8;
+  --surface-2:    #f4f4f5;
+  --surface-3:    #ececee;
+  --border:       #ebebed;
+  --border-strong:#d4d4d8;
 
-  --text-primary:   #0f1623;
-  --text-secondary: #3d4a5c;
-  --text-muted:     #8a95a8;
+  --text-primary:   #18181b;
+  --text-secondary: #52525b;
+  --text-muted:     #a1a1aa;
 
   --accent:       #10b981;
   --accent-dark:  #059669;
-  --accent-bg:    #ecfdf5;
-  --accent-text:  #065f46;
+  --accent-bg:    #f0fdf9;
+  --accent-text:  #047857;
 
   --income:       #10b981;
-  --income-bg:    #ecfdf5;
-  --expense:      #f43f5e;
-  --expense-bg:   #fff1f2;
+  --income-bg:    #f0fdf9;
+  --expense:      #ef4444;
+  --expense-bg:   #fef2f2;
   --warning:      #f59e0b;
   --warning-bg:   #fffbeb;
 
-  --shadow-sm:    0 1px 2px rgba(15,22,35,0.06);
-  --shadow:       0 2px 8px rgba(15,22,35,0.08), 0 0 0 1px rgba(15,22,35,0.04);
-  --shadow-md:    0 4px 16px rgba(15,22,35,0.10), 0 0 0 1px rgba(15,22,35,0.04);
+  /* Sombras quase imperceptíveis — Linear usa isto muito */
+  --shadow-xs:    0 1px 1px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-sm:    0 1px 2px rgba(0,0,0,0.04), 0 2px 6px rgba(0,0,0,0.04);
+  --shadow:       0 2px 6px rgba(0,0,0,0.05), 0 6px 16px rgba(0,0,0,0.06);
+  --shadow-lg:    0 8px 24px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
 
-  --radius-sm:    6px;
-  --radius:       10px;
-  --radius-lg:    14px;
-  --radius-xl:    20px;
+  --radius-sm:    8px;
+  --radius:       12px;
+  --radius-lg:    16px;
 
-  --font-display: 'Sora', system-ui, sans-serif;
-  --font-body:    'Inter', system-ui, sans-serif;
+  --font: 'Inter', -apple-system, system-ui, sans-serif;
+
+  /* Easing consistente em toda a app */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 [data-theme="dark"] {
-  --bg:           #0b0e14;
-  --surface:      #13171f;
-  --surface-2:    #1c2130;
-  --surface-3:    #242a38;
-  --border:       #252c3a;
-  --border-strong:#323b4f;
+  --bg:           #09090b;
+  --surface:      #111113;
+  --surface-2:    #18181b;
+  --surface-3:    #202023;
+  --border:       #232326;
+  --border-strong:#323236;
 
-  --text-primary:   #eef1f6;
-  --text-secondary: #9aa5b8;
-  --text-muted:     #4d5a70;
+  --text-primary:   #fafafa;
+  --text-secondary: #a1a1aa;
+  --text-muted:     #52525b;
 
   --accent:       #34d399;
   --accent-dark:  #10b981;
-  --accent-bg:    #0d2b1f;
+  --accent-bg:    #052e21;
   --accent-text:  #6ee7b7;
 
   --income:       #34d399;
-  --income-bg:    #0d2b1f;
-  --expense:      #fb7185;
-  --expense-bg:   #2d0a14;
+  --income-bg:    #052e21;
+  --expense:      #f87171;
+  --expense-bg:   #2c0e0e;
   --warning:      #fbbf24;
-  --warning-bg:   #2d1c02;
+  --warning-bg:   #2c1f05;
 
-  --shadow-sm:    0 1px 2px rgba(0,0,0,0.3);
-  --shadow:       0 2px 8px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.04);
-  --shadow-md:    0 4px 16px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.04);
+  --shadow-xs:    0 1px 2px rgba(0,0,0,0.3);
+  --shadow-sm:    0 2px 4px rgba(0,0,0,0.3);
+  --shadow:       0 4px 12px rgba(0,0,0,0.4);
+  --shadow-lg:    0 12px 32px rgba(0,0,0,0.5);
 }
 
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 
 body {
-  font-family: var(--font-body);
+  font-family: var(--font);
   background: var(--bg);
   color: var(--text-primary);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  transition: background 0.2s, color 0.2s;
+  letter-spacing: -0.011em;
+  transition: background 0.25s var(--ease), color 0.25s var(--ease);
 }
 
-/* ── Typography ── */
-h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.2; }
+h1, h2, h3, h4 { letter-spacing: -0.025em; font-weight: 600; }
 
-/* ── Inputs ── */
+/* ── Inputs — foco suave, sem salto ── */
 input, select, textarea {
-  font-family: var(--font-body);
+  font-family: var(--font);
   background: var(--surface) !important;
   color: var(--text-primary) !important;
   border-color: var(--border) !important;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition: border-color 0.15s var(--ease), box-shadow 0.15s var(--ease), background 0.25s var(--ease);
 }
 input:focus, select:focus, textarea:focus {
   outline: none !important;
   border-color: var(--accent) !important;
-  box-shadow: 0 0 0 3px rgba(16,185,129,0.12) !important;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 12%, transparent) !important;
 }
 input::placeholder, textarea::placeholder { color: var(--text-muted) !important; }
 
 /* ── Scrollbar ── */
-::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
-/* ── Grids responsivos ── */
+/* ── Grids ── */
 .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 
-/* ── Componentes reutilizáveis ── */
+/* ── Cards — transição suave em hover/tema ── */
 .card {
   background: var(--surface);
   border-radius: var(--radius-lg);
   border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-xs);
+  transition: box-shadow 0.2s var(--ease), border-color 0.2s var(--ease), background 0.25s var(--ease);
 }
+.card:hover { box-shadow: var(--shadow-sm); }
 
+/* ── Botões base (fallback para não-motion) ── */
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
-  gap: 6px; font-family: var(--font-body);
-  font-size: 13px; font-weight: 500;
-  padding: 8px 16px; border-radius: var(--radius);
+  gap: 6px; font-family: var(--font);
+  font-size: 14px; font-weight: 600;
+  padding: 10px 18px; border-radius: var(--radius-sm);
   border: none; cursor: pointer;
-  transition: all 0.15s; white-space: nowrap;
+  transition: all 0.15s var(--ease); white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
 }
-.btn-primary {
-  background: var(--accent); color: #fff;
-}
-.btn-primary:hover { background: var(--accent-dark); transform: translateY(-1px); box-shadow: var(--shadow); }
-.btn-primary:active { transform: translateY(0); }
-.btn-ghost {
-  background: transparent; color: var(--text-secondary);
-  border: 1px solid var(--border);
-}
-.btn-ghost:hover { background: var(--surface-2); }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-dark); }
+.btn-primary:active { transform: scale(0.97); }
+.btn-ghost { background: var(--surface-2); color: var(--text-secondary); border: 1px solid var(--border); }
+.btn-ghost:hover { background: var(--surface-3); }
+.btn-ghost:active { transform: scale(0.97); }
 
 /* ── Mobile ── */
 @media (max-width: 768px) {
@@ -141,81 +146,22 @@ input::placeholder, textarea::placeholder { color: var(--text-muted) !important;
   .hide-mobile { display: none !important; }
   .full-mobile { grid-column: 1 / -1; }
 
-  input, select, textarea {
-    font-size: 16px !important;
-    min-height: 46px;
-  }
-  .btn { min-height: 44px; padding: 10px 18px; }
-}
-
-/* ── Animações suaves ── */
-@media (prefers-reduced-motion: no-preference) {
-  .card { transition: box-shadow 0.15s; }
-  .card:hover { box-shadow: var(--shadow); }
-}
-
-/* ── Login page ── */
-@media (min-width: 768px) {
-  .login-panel { display: flex !important; }
-}
-
-/* Adiciona ao fim do index.css */
-
-/* ── Mobile PWA fixes ── */
-@media (max-width: 768px) {
-  /* Tamanho mínimo de toque — 44px em todos os elementos interativos */
-  button, a, [role="button"] {
-    min-height: 44px;
-    min-width: 44px;
-  }
-
-  /* Inputs grandes para não dar zoom no iOS */
-  input, select, textarea {
-    font-size: 16px !important;
-    min-height: 46px;
-  }
-
-  /* Remove highlight azul ao tocar */
+  button, a, [role="button"] { min-height: 44px; min-width: 44px; }
+  input, select, textarea { font-size: 16px !important; min-height: 46px; }
   * { -webkit-tap-highlight-color: transparent; }
 
-  /* Bottom sheet modais em vez de centrado */
-  .modal-mobile {
-    align-items: flex-end !important;
-  }
-
-  /* Scroll horizontal suave nos filtros */
-  .filters-scroll {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
+  .filters-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
   .filters-scroll::-webkit-scrollbar { display: none; }
-
-  /* Cards com mais padding */
-  .card-mobile {
-    padding: 16px !important;
-    border-radius: 14px !important;
-  }
-
-  /* Texto maior para legibilidade */
-  .tx-amount {
-    font-size: 16px !important;
-    font-weight: 700 !important;
-  }
-
-  /* Header fixo com sombra */
-  header {
-    box-shadow: 0 1px 8px rgba(0,0,0,0.06);
-  }
 }
 
-/* Safe area para iPhone com notch */
 @supports (padding-bottom: env(safe-area-inset-bottom)) {
-  .tab-bar {
-    padding-bottom: env(safe-area-inset-bottom) !important;
-    height: calc(64px + env(safe-area-inset-bottom)) !important;
-  }
-  main {
-    padding-bottom: calc(64px + env(safe-area-inset-bottom) + 16px) !important;
-  }
+  .tab-bar { padding-bottom: env(safe-area-inset-bottom) !important; }
 }
+
+/* ── Fade-in genérico para conteúdo assíncrono ── */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in { animation: fadeIn 0.3s var(--ease); }
+
+/* ── Pulse para skeletons sem JS ── */
+@keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+.skeleton { background: var(--surface-2); border-radius: 6px; animation: pulse 1.4s ease-in-out infinite; }

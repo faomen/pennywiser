@@ -1,16 +1,17 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from './lib/supabase'
 import Layout from './components/Layout'
 import Dashboard from './pages/Dashboard'
 import Transactions from './pages/Transactions'
 import Goals from './pages/Goals'
 import Shared from './pages/Shared'
-import JoinGroup from './pages/JoinGroup'
 import Settings from './pages/Settings'
+import Portfolio from './pages/Portfolio'
+import JoinGroup from './pages/JoinGroup'
 
-
-// LoginPage — cola dentro do App.jsx substituindo o componente LoginPage existente
+const ease = [0.16, 1, 0.3, 1]
 
 function LoginPage() {
   const [email, setEmail] = useState('')
@@ -31,124 +32,127 @@ function LoginPage() {
   }
 
   return (
-    <div style={{
-      display: 'flex', minHeight: '100vh',
-      background: 'var(--bg)',
-    }}>
-      {/* Left panel — branding */}
-      <div style={{
-        display: 'none',
-        flex: 1,
+    <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg)' }}>
+      <div className="login-panel" style={{
+        display: 'none', flex: 1,
         background: 'linear-gradient(160deg, #064e3b 0%, #065f46 40%, #047857 100%)',
-        padding: '48px',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        // only show on desktop via media query — handled inline for simplicity
-      }} className="login-panel">
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <div style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, color: '#fff', fontWeight: 700, fontFamily: 'var(--font-display)' }}>P</div>
-          <span style={{ fontSize: 18, fontWeight: 700, color: '#fff', fontFamily: 'var(--font-display)', letterSpacing: '-0.02em' }}>Pennywiser</span>
-        </div>
-        <div>
-          <p style={{ fontSize: 32, fontWeight: 700, color: '#fff', fontFamily: 'var(--font-display)', lineHeight: 1.2, letterSpacing: '-0.03em', marginBottom: 16 }}>
+        padding: '48px', flexDirection: 'column', justifyContent: 'space-between',
+      }}>
+        <motion.div initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.4, ease }}
+          style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, color: '#fff', fontWeight: 700 }}>P</div>
+          <span style={{ fontSize: 18, fontWeight: 700, color: '#fff', letterSpacing: '-0.02em' }}>Pennywiser</span>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1, ease }}>
+          <p style={{ fontSize: 32, fontWeight: 700, color: '#fff', lineHeight: 1.2, letterSpacing: '-0.03em', marginBottom: 16 }}>
             O teu dinheiro,<br />organizado.
           </p>
           <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.7)', lineHeight: 1.6 }}>
-            Controla despesas, define objetivos de poupança e divide contas com quem queres — tudo num só lugar.
+            Controla despesas, define objetivos de poupança e divide contas com quem queres.
           </p>
-        </div>
-        <div style={{ display: 'flex', gap: 24 }}>
+        </motion.div>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4, delay: 0.2 }}
+          style={{ display: 'flex', gap: 24 }}>
           {[['📊', 'Dashboard'], ['🎯', 'Objetivos'], ['👥', 'Partilhadas']].map(([e, l]) => (
             <div key={l} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <span style={{ fontSize: 18 }}>{e}</span>
               <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)' }}>{l}</span>
             </div>
           ))}
-        </div>
+        </motion.div>
       </div>
 
-      {/* Right panel — form */}
-      <div style={{
-        width: '100%', maxWidth: 440,
-        margin: '0 auto',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: '32px 24px',
-      }}>
-        <div style={{ width: '100%', maxWidth: 360 }}>
-          {/* Mobile logo */}
+      <div style={{ width: '100%', maxWidth: 440, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '32px 24px' }}>
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease }}
+          style={{ width: '100%', maxWidth: 360 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 40 }}>
             <div style={{
               width: 36, height: 36, borderRadius: 10,
               background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 18, color: '#fff', fontWeight: 700,
-              fontFamily: 'var(--font-display)',
-              boxShadow: '0 4px 12px rgba(16,185,129,0.3)',
+              fontSize: 18, color: '#fff', fontWeight: 700, boxShadow: '0 4px 12px rgba(16,185,129,0.3)',
             }}>P</div>
-            <span style={{ fontSize: 20, fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
-              Pennywiser
-            </span>
+            <span style={{ fontSize: 20, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>Pennywiser</span>
           </div>
 
-          <h2 style={{ fontSize: 22, fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: 6 }}>
-            {isSignUp ? 'Criar conta' : 'Bem-vindo de volta'}
-          </h2>
-          <p style={{ fontSize: 14, color: 'var(--text-muted)', marginBottom: 28 }}>
-            {isSignUp ? 'Começa a controlar as tuas finanças hoje.' : 'Entra na tua conta para continuar.'}
-          </p>
+          <AnimatePresence mode="wait">
+            <motion.div key={isSignUp ? 'signup' : 'signin'} initial={{ opacity: 0, x: 8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -8 }} transition={{ duration: 0.2 }}>
+              <h2 style={{ fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: 6 }}>
+                {isSignUp ? 'Criar conta' : 'Bem-vindo de volta'}
+              </h2>
+              <p style={{ fontSize: 14, color: 'var(--text-muted)', marginBottom: 28 }}>
+                {isSignUp ? 'Começa a controlar as tuas finanças hoje.' : 'Entra na tua conta para continuar.'}
+              </p>
+            </motion.div>
+          </AnimatePresence>
 
           <form onSubmit={handle} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             <div>
               <label style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Email</label>
-              <input
-                type="email" placeholder="o@teu.email" value={email}
-                onChange={e => setEmail(e.target.value)} required
-                style={{ width: '100%', padding: '11px 14px', borderRadius: 10, border: '1.5px solid var(--border)', fontSize: 14 }}
-              />
+              <input type="email" placeholder="o@teu.email" value={email} onChange={e => setEmail(e.target.value)} required
+                style={{ width: '100%', padding: '11px 14px', borderRadius: 10, border: '1.5px solid var(--border)', fontSize: 14 }} />
             </div>
             <div>
               <label style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Password</label>
-              <input
-                type="password" placeholder="••••••••" value={password}
-                onChange={e => setPassword(e.target.value)} required
-                style={{ width: '100%', padding: '11px 14px', borderRadius: 10, border: '1.5px solid var(--border)', fontSize: 14 }}
-              />
+              <input type="password" placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} required
+                style={{ width: '100%', padding: '11px 14px', borderRadius: 10, border: '1.5px solid var(--border)', fontSize: 14 }} />
             </div>
 
-            {error && (
-              <div style={{ padding: '10px 14px', borderRadius: 8, background: 'var(--expense-bg)', border: '1px solid var(--expense)', fontSize: 13, color: 'var(--expense)' }}>
-                {error}
-              </div>
-            )}
+            <AnimatePresence>
+              {error && (
+                <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}
+                  style={{ padding: '10px 14px', borderRadius: 8, background: 'var(--expense-bg)', border: '1px solid var(--expense)', fontSize: 13, color: 'var(--expense)', overflow: 'hidden' }}>
+                  {error}
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-            <button type="submit" disabled={loading} style={{
-              marginTop: 4,
-              padding: '13px',
-              borderRadius: 10,
+            <motion.button whileTap={{ scale: 0.98 }} type="submit" disabled={loading} style={{
+              marginTop: 4, padding: '13px', borderRadius: 10,
               background: loading ? 'var(--accent-bg)' : 'var(--accent)',
               color: loading ? 'var(--accent)' : '#fff',
               border: 'none', fontSize: 14, fontWeight: 600,
-              cursor: loading ? 'not-allowed' : 'pointer',
-              fontFamily: 'var(--font-body)',
-              transition: 'all 0.15s',
-              letterSpacing: '-0.01em',
+              cursor: loading ? 'not-allowed' : 'pointer', letterSpacing: '-0.01em',
             }}>
               {loading ? 'A processar...' : isSignUp ? 'Criar conta' : 'Entrar'}
-            </button>
+            </motion.button>
           </form>
 
           <p style={{ textAlign: 'center', marginTop: 20, fontSize: 13, color: 'var(--text-muted)' }}>
             {isSignUp ? 'Já tens conta?' : 'Não tens conta?'}{' '}
-            <span
-              onClick={() => { setIsSignUp(!isSignUp); setError('') }}
-              style={{ color: 'var(--accent)', cursor: 'pointer', fontWeight: 500 }}
-            >
+            <span onClick={() => { setIsSignUp(!isSignUp); setError('') }} style={{ color: 'var(--accent)', cursor: 'pointer', fontWeight: 500 }}>
               {isSignUp ? 'Entrar' : 'Criar conta'}
             </span>
           </p>
-        </div>
+        </motion.div>
       </div>
     </div>
+  )
+}
+
+function AnimatedRoutes() {
+  const location = useLocation()
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={location.pathname}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -8 }}
+        transition={{ duration: 0.2, ease }}
+      >
+        <Routes location={location}>
+          <Route path="/" element={<Navigate to="/dashboard" />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/transactions" element={<Transactions />} />
+          <Route path="/goals" element={<Goals />} />
+          <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/shared" element={<Shared />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/join/:token" element={<JoinGroup />} />
+        </Routes>
+      </motion.div>
+    </AnimatePresence>
   )
 }
 
@@ -161,15 +165,14 @@ export default function App() {
       setSession(session)
       setLoading(false)
     })
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
-      setSession(session)
-    })
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => setSession(session))
     return () => subscription.unsubscribe()
   }, [])
 
   if (loading) return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-      A carregar...
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', background: 'var(--bg)' }}>
+      <motion.div animate={{ rotate: 360 }} transition={{ duration: 0.8, repeat: Infinity, ease: 'linear' }}
+        style={{ width: 32, height: 32, borderRadius: '50%', border: '3px solid var(--accent-bg)', borderTop: '3px solid var(--accent)' }} />
     </div>
   )
 
@@ -177,16 +180,8 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <Layout session={session}>
-        <Routes>
-          <Route path="/" element={<Navigate to="/dashboard" />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/transactions" element={<Transactions />} />
-          <Route path="/goals" element={<Goals />} />
-          <Route path="/shared" element={<Shared />} />
-          <Route path="/join/:token" element={<JoinGroup />} />
-          <Route path="/settings" element={<Settings />} />
-        </Routes>
+      <Layout>
+        <AnimatedRoutes />
       </Layout>
     </BrowserRouter>
   )
